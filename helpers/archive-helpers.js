@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
+var request = require('request');
 
 /*
  * You will need to reuse the same paths many times over in the course of this sprint.
@@ -26,16 +27,83 @@ exports.initialize = function(pathsObj) {
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(callback) {
+  fs.readFile(exports.paths.list, 'utf8', (err, data) => {
+    if (err) {
+      throw err;
+    }
+    callback(err, data.split('\n'));
+  });
 };
 
 exports.isUrlInList = function(url, callback) {
+  exports.readListOfUrls((err, data) => {
+    callback(err, data.includes(url));
+  });
 };
 
 exports.addUrlToList = function(url, callback) {
+  const check = exports.isUrlInList(url, (err, exists) => {
+    if (exists === false) {
+      fs.appendFile(exports.paths.list, url, (err) => {
+        callback(err);
+      });
+    } 
+  });
 };
 
 exports.isUrlArchived = function(url, callback) {
+  let sitePath = path.join(exports.paths.archivedSites, url);
+  
+  fs.access(sitePath, (err) => {
+    if (err) {
+      if (err.code === 'ENOENT') {
+        callback(null, false);
+      }
+    } else {
+      callback(err, true);
+    }
+  });
 };
 
 exports.downloadUrls = function(urls) {
+  //write file in sites dir
+  //get html from internet
+  //appendFile to newly created write file
+  urls.forEach((site) => {
+    request(`https://${site}`, function (error, response, body) {
+      fs.writeFile(exports.paths.archivedSites + '/' + site, body);
+    });
+  });
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
