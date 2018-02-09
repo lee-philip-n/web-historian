@@ -42,9 +42,9 @@ exports.isUrlInList = function(url, callback) {
 };
 
 exports.addUrlToList = function(url, callback) {
-  const check = exports.isUrlInList(url, (err, exists) => {
+  exports.isUrlInList(url, (err, exists) => {
     if (exists === false) {
-      fs.appendFile(exports.paths.list, url, (err) => {
+      fs.appendFile(exports.paths.list, url + '\n', (err) => {
         callback(err);
       });
     } 
@@ -75,7 +75,6 @@ exports.downloadUrls = function(urls) {
     });
   });
 };
-
 
 
 
