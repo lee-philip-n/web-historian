@@ -11,7 +11,7 @@ exports.headers = {
 };
 
 exports.serveAssets = function(res, asset, callback) {
-  fs.readFile(archive.paths.archivedSites + asset, 'utf8', (err, data) => {
+  fs.readFile(archive.paths.archivedSites + '/' + asset, 'utf8', (err, data) => {
     callback(err, res, data);
   });
 };

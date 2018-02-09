@@ -38,7 +38,7 @@ exports.handleRequest = function (req, res) {
                 res.writeHead(302);
                 res.end();
               } else {
-                res.writeHead(200);
+                res.writeHead(200, {Location: __dirname + '/archives/sites/' + url, 'content-type': 'text.html'});
                 res.end(data);
               }
             });
@@ -48,7 +48,7 @@ exports.handleRequest = function (req, res) {
                 throw err;
               } else if (urlListExists === true) {
                 fs.readFile(__dirname + '/public/loading.html', 'utf8', (err, data) => {
-                  res.writeHead(302, {Location: __dirname + '/public/loading.html'});
+                  res.writeHead(200, {Location: __dirname + '/public/loading.html'});
                   res.end(data);
                 });
               } else if (urlListExists === false) {
@@ -57,7 +57,7 @@ exports.handleRequest = function (req, res) {
                     throw err;
                   }
                   fs.readFile(__dirname + '/public/loading.html', 'utf8', (err, data) => {
-                    res.writeHead(302, {Location: __dirname + '/public/loading.html'});
+                    res.writeHead(200, {Location: __dirname + '/public/loading.html'});
                     res.end(data);
                   });
                 });

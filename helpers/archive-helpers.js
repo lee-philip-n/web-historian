@@ -71,7 +71,9 @@ exports.downloadUrls = function(urls) {
   //appendFile to newly created write file
   urls.forEach((site) => {
     request(`https://${site}`, function (error, response, body) {
-      fs.writeFile(exports.paths.archivedSites + '/' + site, body);
+      fs.writeFile(exports.paths.archivedSites + '/' + site, body, (error) => {
+
+      });
     });
   });
 };

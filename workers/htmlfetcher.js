@@ -1,11 +1,11 @@
 var archive = require('../helpers/archive-helpers.js');
-var cron = require('cron');
+var CronJob = require('cron').CronJob;
 // Use the code in `archive-helpers.js` to actually download the urls
 // that are waiting.
 
-cron.schedule('* /1 * * * *', function() {
+let cron = new CronJob('* */1 * * *', function() {  
+  console.log('cron is running every minute');
   archive.readListOfUrls((err, array) => {
-    archive.downloadUrl(array);
+    archive.downloadUrls(array);
   });
-  console.log('running a task every minute');
-});
+}, null, true, 'America/Los_Angeles');
